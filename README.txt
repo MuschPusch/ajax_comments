@@ -12,6 +12,9 @@ TROUBLESHOOTING
 2. If you have themed your comments output, make sure that everything is wrapped to ".comment" class
 in your "comment.tpl.php"
 
+3. Drupal 5 version of AJAX comments MODULE WILL NOT WORK WITH CAPTCHA setting other than
+"Don't place captcha if passed previously"
+
 
 Created by Alexandr Shvets, aka neochief
 http://drupaldance.com/

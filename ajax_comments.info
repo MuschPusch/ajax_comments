@@ -1,5 +1,8 @@
 name = AJAX Comments
-description = "AJAXifies comments on site."
+description = "Brings ability to AJAXify comments on the site."
 package = "Other"
-core = 6.x
-dependencies[] = comment
+; Information added by drupal.org packaging script on 2008-01-13
+version = "5.x-1.0"
+project = "ajax_comments"
+datestamp = "1200186907"
+dependencies = jquery_form
