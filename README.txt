@@ -2,8 +2,6 @@ INSTALLATION
 
 1. Unpack module to your sites/all/modules directory
 2. Enable "AJAX comments" module at Administer -> Site building -> Modules (admin/build/modules)
-3. Optional: Make some changes to module configuration at
-   Administer -> Site configuration -> AJAX comments (admin/settings/ajax_comments)
 
 TROUBLESHOOTING
 
