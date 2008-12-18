@@ -1,4 +1,4 @@
-commentbox = ".commentbox";
+commentbox = ".comment";
 form_always_opened = false;
 rows_in_reply = 2;
 rows_default = 5;
