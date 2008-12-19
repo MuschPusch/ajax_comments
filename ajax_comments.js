@@ -138,6 +138,7 @@ function showRequest(formData, jqForm, options) {
     $('#comment-preview').html('<div class="progress"><div class="bar"></div></div>');
     $('#comment-preview').fadeTo('fast',1);
   });
+  $('.form-submit').attr('disabled','true');
 
   // here we could return false to prevent the form from being submitted; 
   // returning anything other than false will allow the form submit to continue 
@@ -177,5 +178,6 @@ function showResponse(responseText, statusText)  {
       $('#comment-preview').fadeTo('fast',1);
     });
   }
+  $('.form-submit').removeAttr('disabled');
 }
 
