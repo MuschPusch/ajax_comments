@@ -4,13 +4,6 @@
 
 function ajax_comments_form_alter($form_id, &$form) {
   if (($form_id == 'comment_form')&&(arg(1)!='edit')) {
-    /*if (!isset($form['op'])) {
-      $form['op'] = array(
-        '#type' => 'hidden',
-        '#value' => '',
-        '#weight' => -5
-      );
-    }*/
     $form['#prefix'] = '<div id="comment-preview"></div>';
     //$form['#submit'] = array('your_function_submit' => array());
     
@@ -35,8 +28,6 @@ function ajax_comments_form_alter($form_id, &$form) {
         'basePath' => base_path(),
       ),
     ), 'setting');
-    
-    
   }
 }
 
@@ -75,15 +66,15 @@ function get_token($id){
 function ajax_comments_submit_dispatch($form_id, $form_values) {
   $edit = _comment_form_submit($form_values);
   if ($cid = comment_save($edit)) {
-    $comment = _comment_load($cid);
-    
-    $preview = theme('comment_view', $comment);
-    if ($comment->pid)
-      $preview = '<div class="indented">'.$preview.'<div>';
+    $errors = form_get_errors();
+    if (!$errors) {
+      $comment = _comment_load($cid);
+      $preview = theme('comment_view', $comment);
+      if ($comment->pid)
+        $preview = '<div class="indented">'.$preview.'<div>';
 
-    $redirect = '';
-    if (!$errors)
       $redirect = drupal_get_path_alias('node/'.$comment->nid).'?r'.$cid.'#comment-'.$cid;
+    }
     
     $result = array(
       'status' => TRUE,
