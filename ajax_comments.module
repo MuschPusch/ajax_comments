@@ -75,28 +75,12 @@ function get_token($id){
 function ajax_comments_submit_dispatch($form_id, $form_values) {
   $edit = _comment_form_submit($form_values);
   if ($cid = comment_save($edit)) {
-    $comment = (object)$edit;
+    $comment = _comment_load($cid);
     
-    $errors = form_get_errors();
-    
-    if (!$errors) {
-	    // Attach the user and time information.
-	    if ($edit['author']) {
-	      $account = user_load(array('name' => $edit['author']));
-	    }
-	    elseif ($user->uid && !isset($edit['is_anonymous'])) {
-	      $account = $user;
-	    }
-	    if ($account) {
-	      $comment->uid = $account->uid;
-	      $comment->name = check_plain($account->name);
-	    }
-	    $comment->cid = $cid;
-	    $comment->timestamp = $edit['timestamp'] ? $edit['timestamp'] : time();
-	    $preview = theme('comment_view', $comment);
-	    if ($comment->pid)
-	      $preview = '<div class="indented">'.$preview.'<div>';
-    }
+    $preview = theme('comment_view', $comment);
+    if ($comment->pid)
+      $preview = '<div class="indented">'.$preview.'<div>';
+
     $redirect = '';
     if (!$errors)
       $redirect = drupal_get_path_alias('node/'.$comment->nid).'?r'.$cid.'#comment-'.$cid;

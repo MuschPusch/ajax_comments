@@ -15,6 +15,20 @@ in your "comment.tpl.php"
 3. Drupal 5 version of AJAX comments MODULE WILL NOT WORK WITH CAPTCHA setting other than
 "Don't place captcha if passed previously"
 
+4. IMPORTANT. If you have "Comment Notify" module installed, please, also install
+http://drupal.org/project/queue_mail to prevent server errors during comment submitting.
 
+TIPS & TRICKS
+
+1. To change loader progress bar look and feel, just override ".progress .bar" classes in your
+theme, for example:
+
+.progress .bar{
+  background:transparent url(../images/my-ajax-loader.gif) no-repeat 0 50%;
+}
+
+
+
+----
 Created by Alexandr Shvets, aka neochief
 http://drupaldance.com/
