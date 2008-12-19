@@ -77,7 +77,6 @@ function initAjaxComments(){
     // bind form using 'ajaxForm' 
     $('#comment-form').ajaxForm(options);
 
-
     //initializing "Reply" links
     $('a.comment_reply').click(reply_click);
     
