@@ -44,5 +44,5 @@ msgid "Usually, there is no need in big forms for replies, so this setting allow
 msgstr "Обычно, не нужна слишком большая форма для написания ответов, поэтому эта настройка может улучшить вид форм для ответов."
 
 #:
-msgid "предпросмотр"
-msgstr ""
+msgid "preview"
+msgstr "предпросмотр"
