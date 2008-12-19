@@ -19,9 +19,6 @@ function initForm(action,rows){
   $('#comment-form-content #comment-preview').empty();
   $('#comment-form .error').removeClass('error');
   
-  
-
-  
   // if user is not anonimous, getting the proper form token
   if ($('#comment-form #edit-form-token').get(0)) {
     //disabling buttons while loading tokens
@@ -58,6 +55,8 @@ function initForm_Step2(token,action,rows){
       $('#comment-form #edit-form-token').attr('value',token);
     }
     
+    $('#comment-form textarea').focus();
+
     //setting a new action for form
     $('#comment-form').attr('action',action);
     //reinitializing ajax-submit
