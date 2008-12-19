@@ -148,31 +148,35 @@ function showRequest(formData, jqForm, options) {
  
 // post-submit callback 
 function showResponse(responseText, statusText)  {
-    if (responseText.data.message)
-      text = responseText.data.message;
-    else
-      text = responseText.data.preview;
+  if (responseText.data.message)
+    text = responseText.data.message;
+  else
+    text = responseText.data.preview;
+  
+  if ((responseText.data.captcha)||(responseText.data.token)){
+    $('.captcha').html($(responseText.data.captcha).html());
+  }
+  
+  if (responseText.data.destination != ''){
+    if ($('#comment-form-title').is('.pressed')){
+      $('#comment-form-content').parents('.box').before(text);
+    }
+    else{
+      $('#comment-form-content').before(text);
+    }
+
+    //initializing new "Reply" link
+    $('a.comment_reply').click(reply_click);
+
+    $('#comment-form-content').animate({height:'hide',opacity:'hide'});
     
-    if ((responseText.data.captcha)||(responseText.data.token)){
-      $('.captcha').html($(responseText.data.captcha).html());
-    }
-    
-    if (responseText.data.destination != ''){
-      if ($('#comment-form-title').is('.pressed')){
-        $('#comment-form-content').parents('.box').before(text);
-      }
-      else{
-        $('#comment-form-content').before(text);
-      }
-      $('#comment-form-content').animate({height:'hide',opacity:'hide'});
-      
-      //$('.pressed').removeClass('pressed');
-    }
-    else {
-      $('#comment-preview').fadeTo('fast',0.1,function(){
-        $('#comment-preview').html(text);
-        $('#comment-preview').fadeTo('fast',1);
-      });
-    }
+    //$('.pressed').removeClass('pressed');
+  }
+  else {
+    $('#comment-preview').fadeTo('fast',0.1,function(){
+      $('#comment-preview').html(text);
+      $('#comment-preview').fadeTo('fast',1);
+    });
+  }
 }
 
