@@ -68,7 +68,7 @@ function ajax_comments_submit_dispatch($form_id, $form_values) {
   if ($cid = comment_save($edit)) {
     $errors = form_get_errors();
     if (!$errors) {
-      $node = node_load($comment->nid);
+      $node = node_load($edit['nid']);
 
       // Single comment view.
       $query = 'SELECT c.cid, c.pid, c.nid, c.subject, c.comment, c.format, c.timestamp, c.name, c.mail, c.homepage, u.uid, u.name AS registered_name, u.picture, u.data, c.score, c.users, c.status FROM {comments} c INNER JOIN {users} u ON c.uid = u.uid WHERE c.cid = %d';
@@ -103,7 +103,7 @@ function ajax_comments_submit_dispatch($form_id, $form_values) {
       'status' => TRUE,
       'data' =>  array(
         'errors' => $errors,
-        'message' => '',
+        'message' => theme('status_messages'),
         'preview' => $preview,
         'destination' => $redirect
       )

@@ -10,7 +10,8 @@ TROUBLESHOOTING
 "Display below post or comments".
 
 2. If you have themed your comments output, make sure that everything is wrapped to ".comment" class
-in your "comment.tpl.php"
+in your "comment.tpl.php". Your comment form box should include ".box" class and "Post new comment"
+should be any of h2-h4 tags.
 
 3. Drupal 5 version of AJAX comments MODULE WILL NOT WORK WITH CAPTCHA setting other than
 "Don't place captcha if passed previously"
