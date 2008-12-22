@@ -14,7 +14,6 @@ function initForm(action,rows){
   $('#comment-form textarea').attr('rows',rows);
   $('#comment-form textarea').attr('value','');
   
-  
   //clearing form
   $('#comment-form-content #comment-preview').empty();
   $('#comment-form .error').removeClass('error');
@@ -74,6 +73,10 @@ function initAjaxComments(){
     }; 
     // bind form using 'ajaxForm' 
     $('#comment-form').ajaxForm(options);
+
+    if(typeof(FCKeditor_OnAfterLinkedFieldUpdate)!='undefined'){ 
+      $('.form-submit').bind('click', function(){ FCKeditor_OnAfterLinkedFieldUpdate(FCKeditorAPI.GetInstance('edit-comment')); });
+    }
 
     //initializing "Reply" links
     $('a.comment_reply').click(reply_click);
