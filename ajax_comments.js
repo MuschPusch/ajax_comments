@@ -45,9 +45,8 @@ function initForm(action,rows){
   else
     initForm_Step2('',action,rows)
 
-  //show after all was done
-  $('#comment-form-content').animate({height:'show'});
-
+  //show after everything is done
+  $('#comment-form-content').animate({height:'show'}, 'fast', function() { $('#comment-form textarea').focus(); });
 }
 
 function initForm_Step2(token,action,rows){
@@ -55,8 +54,6 @@ function initForm_Step2(token,action,rows){
       $('#comment-form #edit-form-token').attr('value',token);
     }
     
-    $('#comment-form textarea').focus();
-
     //setting a new action for form
     $('#comment-form').attr('action',action);
     //reinitializing ajax-submit
