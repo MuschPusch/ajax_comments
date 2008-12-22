@@ -42,8 +42,9 @@ function initForm(action,rows){
       }
     });
   }
-  else
+  else {
     initForm_Step2('',action,rows)
+  }
 
   //show after everything is done
   $('#comment-form-content').animate({height:'show'}, 'fast', function() { $('#comment-form textarea').focus(); });
