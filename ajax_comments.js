@@ -8,6 +8,47 @@ $(document).ready(function() {
   initAjaxComments();
 });
 
+function initAjaxComments(){
+  if ($('#comment-form')) {
+    var options = { 
+        beforeSubmit:  showRequest,  // pre-submit callback 
+        success:       showResponse,  // post-submit callback 
+        dataType:  'json',
+        semantic: true
+    }; 
+    // bind form using 'ajaxForm' 
+    $('#comment-form').ajaxForm(options);
+
+    if(typeof(FCKeditor_OnAfterLinkedFieldUpdate)!='undefined'){ 
+      $('.form-submit').bind('click', function(){ FCKeditor_OnAfterLinkedFieldUpdate(FCKeditorAPI.GetInstance('edit-comment')); });
+    }
+
+    //initializing "Reply" links
+    $('a.comment_reply').click(reply_click);
+    
+    //initializing main form
+    action = $('#comment-form').attr('action');
+    
+    title_element = $('#comment-form').parents(".box").find("h2,h3,h4");
+    title = title_element.html();
+    title_element.html('<a href="'+action+'" id="comment-form-title">'+title+'</a>');
+    $('#comment-form').parents(".box").find(".content").attr('id','comment-form-content');
+    
+    page_url = document.location.toString();
+    fragment = '';
+    if (page_url.match('#'))
+      fragment = page_url.split('#')[1];
+    
+    if ((fragment != 'comment-form')&&(!form_always_opened)) {
+      $('#comment-form-content').hide();
+    }
+    else {
+      $('#comment-form-title').addClass('pressed');
+    }
+    
+    $('#comment-form-title').click(reply_click);
+  }
+}
 
 function initForm(action,rows){
   //resizing textarea
@@ -60,49 +101,6 @@ function initForm_Step2(token,action,rows){
     $('#comment-form').removeClass('ajaxsubmit-processed');
     
     $('.form-submit').removeAttr('disabled');
-}
-
-
-function initAjaxComments(){
-  if ($('#comment-form')) {
-    var options = { 
-        beforeSubmit:  showRequest,  // pre-submit callback 
-        success:       showResponse,  // post-submit callback 
-        dataType:  'json',
-        semantic: true
-    }; 
-    // bind form using 'ajaxForm' 
-    $('#comment-form').ajaxForm(options);
-
-    if(typeof(FCKeditor_OnAfterLinkedFieldUpdate)!='undefined'){ 
-      $('.form-submit').bind('click', function(){ FCKeditor_OnAfterLinkedFieldUpdate(FCKeditorAPI.GetInstance('edit-comment')); });
-    }
-
-    //initializing "Reply" links
-    $('a.comment_reply').click(reply_click);
-    
-    //initializing main form
-    action = $('#comment-form').attr('action');
-    
-    title_element = $('#comment-form').parents(".box").find("h2,h3,h4");
-    title = title_element.html();
-    title_element.html('<a href="'+action+'" id="comment-form-title">'+title+'</a>');
-    $('#comment-form').parents(".box").find(".content").attr('id','comment-form-content');
-    
-    page_url = document.location.toString();
-    fragment = '';
-    if (page_url.match('#'))
-      fragment = page_url.split('#')[1];
-    
-    if ((fragment != 'comment-form')&&(!form_always_opened)) {
-      $('#comment-form-content').hide();
-    }
-    else {
-      $('#comment-form-title').addClass('pressed');
-    }
-    
-    $('#comment-form-title').click(reply_click);
-  }
 }
 
 function reply_click() {
@@ -168,11 +166,10 @@ function showResponse(responseText, statusText)  {
 
     //initializing comments links
     $('.comment_reply a').click(reply_click);
-    $('.comment_delete a').click(delete_click);
 
     $('#comment-form-content').animate({height:'hide',opacity:'hide'});
     
-    //$('.pressed').removeClass('pressed');
+    $('.pressed').removeClass('pressed');
   }
   else {
     $('#comment-preview').fadeTo('fast',0.1,function(){

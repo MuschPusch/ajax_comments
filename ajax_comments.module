@@ -7,7 +7,7 @@ function ajax_comments_form_alter($form_id, &$form) {
     $form['#prefix'] = '<div id="comment-preview"></div>';
 
     $form['js_enabled'] = array(
-      '#type' => 'textfield',
+      '#type' => 'hidden',
       '#default_value' => $_GET['q'],
       '#weight' => 0,
     );
