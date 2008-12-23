@@ -5,7 +5,13 @@
 function ajax_comments_form_alter($form_id, &$form) {
   if (($form_id == 'comment_form')&&(arg(1)!='edit')) {
     $form['#prefix'] = '<div id="comment-preview"></div>';
-    //$form['#submit'] = array('your_function_submit' => array());
+
+    $form['js_enabled'] = array(
+      '#type' => 'textfield',
+      '#default_value' => $_GET['q'],
+      '#weight' => 0,
+    );
+    $form['#suffix'] = '<script>$("#comment-form #edit-js-enabled").val(1);</script>';
     
     if (!empty($_POST) && ($_POST['form_id'] == $form_id)) {
       // Redirect on successful submit, i.e., if there are no errors.
@@ -64,6 +70,8 @@ function get_token($id){
 
 
 function ajax_comments_submit_dispatch($form_id, $form_values) {
+  $js_enabled = $form_values['js_enabled'];
+
   $edit = _comment_form_submit($form_values);
   if ($cid = comment_save($edit)) {
     $errors = form_get_errors();
@@ -108,11 +116,16 @@ function ajax_comments_submit_dispatch($form_id, $form_values) {
         'destination' => $redirect
       )
     );
+    if ($js_enabled != 1) {
+      return $js_enabled;
+    }
     print drupal_to_js($result);
   }
 }
 
 function ajax_comments_dispatch($form_id = NULL, $form = NULL) {
+  $js_enabled = $form['js_enabled']['#value'];
+
   if (module_exists('captcha')) {
     captcha_form_alter('comment_form',$form_c);
     captcha_pre_render('comment_form',$form_c);
@@ -136,6 +149,17 @@ function ajax_comments_dispatch($form_id = NULL, $form = NULL) {
       'captcha' => $captcha,
     )
   );
+  if ($js_enabled != 1) {
+    if ($form['form_id']['#post']['op'] != t('Preview comment')) {
+      drupal_goto($js_enabled);
+    }
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save'),
+      '#weight' => 19
+    );
+    return $form;
+  }
 
   print drupal_to_js($result);
   exit();
