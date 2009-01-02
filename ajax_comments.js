@@ -3,52 +3,45 @@ form_always_opened = false;
 rows_in_reply = 2;
 rows_default = 5;
 
-// prepare the form when the DOM is ready 
-$(document).ready(function() { 
+// prepare the form when the DOM is ready
+$(document).ready(function() {
   initAjaxComments();
 });
 
 function initAjaxComments(){
   if ($('#comment-form')) {
-    var options = { 
-        beforeSubmit:  showRequest,  // pre-submit callback 
-        success:       showResponse,  // post-submit callback 
+    var options = {
+        beforeSubmit:  showRequest,  // pre-submit callback
+        success:       showResponse,  // post-submit callback
         dataType:  'json',
         semantic: true
-    }; 
-    // bind form using 'ajaxForm' 
+    };
+    // bind form using 'ajaxForm'
     $('#comment-form').ajaxForm(options);
-
-    if (typeof(doFCKeditorSave)!='undefined') {
-      $('.form-submit').bind('click', function(){ doFCKeditorSave(); });
-    }
-    if(typeof(FCKeditor_OnAfterLinkedFieldUpdate)!='undefined'){ 
-      $('.form-submit').bind('click', function(){ FCKeditor_OnAfterLinkedFieldUpdate(FCKeditorAPI.GetInstance('edit-comment')); });
-    }
 
     //initializing "Reply" links
     $('a.comment_reply').click(reply_click);
-    
+
     //initializing main form
     action = $('#comment-form').attr('action');
-    
+
     title_element = $('#comment-form').parents(".box").find("h2,h3,h4");
     title = title_element.html();
     title_element.html('<a href="'+action+'" id="comment-form-title">'+title+'</a>');
     $('#comment-form').parents(".box").find(".content").attr('id','comment-form-content');
-    
+
     page_url = document.location.toString();
     fragment = '';
     if (page_url.match('#'))
       fragment = page_url.split('#')[1];
-    
+
     if ((fragment != 'comment-form')&&(!form_always_opened)) {
       $('#comment-form-content').hide();
     }
     else {
       $('#comment-form-title').addClass('pressed');
     }
-    
+
     $('#comment-form-title').click(reply_click);
   }
 }
@@ -57,11 +50,13 @@ function initForm(action,rows){
   //resizing textarea
   $('#comment-form textarea').attr('rows',rows);
   $('#comment-form textarea').attr('value','');
-  
+
+  FCKupdate();
+
   //clearing form
   $('#comment-form-content #comment-preview').empty();
   $('#comment-form .error').removeClass('error');
-  
+
   // if user is not anonimous, getting the proper form token
   if ($('#comment-form #edit-form-token').get(0)) {
     //disabling buttons while loading tokens
@@ -97,12 +92,12 @@ function initForm_Step2(token,action,rows){
     if (token) {
       $('#comment-form #edit-form-token').attr('value',token);
     }
-    
+
     //setting a new action for form
     $('#comment-form').attr('action',action);
     //reinitializing ajax-submit
     $('#comment-form').removeClass('ajaxsubmit-processed');
-    
+
     $('.form-submit').removeAttr('disabled');
 }
 
@@ -130,35 +125,35 @@ function reply_click() {
     initForm($(this).attr('href'),rows);
     $('.pressed').removeClass('pressed');
     $(this).addClass('pressed');
-  } 
+  }
   return false;
 }
 
-// pre-submit callback 
-function showRequest(formData, jqForm, options) { 
+// pre-submit callback
+function showRequest(formData, jqForm, options) {
   $('#comment-preview').fadeTo('fast', 0.1, function(){
     $('#comment-preview').html('<div class="progress"><div class="bar"></div></div>');
     $('#comment-preview').fadeTo('fast',1);
   });
   $('.form-submit').attr('disabled','true');
 
-  // here we could return false to prevent the form from being submitted; 
-  // returning anything other than false will allow the form submit to continue 
-  return true; 
-} 
+  // here we could return false to prevent the form from being submitted;
+  // returning anything other than false will allow the form submit to continue
+  return true;
+}
 
- 
-// post-submit callback 
+
+// post-submit callback
 function showResponse(responseText, statusText)  {
   if (responseText.data.message)
     text = responseText.data.message;
   else
     text = responseText.data.preview;
-  
+
   if ((responseText.data.captcha)||(responseText.data.token)){
     $('.captcha').html($(responseText.data.captcha).html());
   }
-  
+
   if (responseText.data.destination != ''){
     if ($('#comment-form-title').is('.pressed')){
       $('#comment-form-content').parents('.box').before(text);
@@ -171,7 +166,7 @@ function showResponse(responseText, statusText)  {
     $('.comment_reply a').click(reply_click);
 
     $('#comment-form-content').animate({height:'hide',opacity:'hide'});
-    
+
     $('.pressed').removeClass('pressed');
   }
   else {
@@ -183,3 +178,12 @@ function showResponse(responseText, statusText)  {
   $('.form-submit').removeAttr('disabled');
 }
 
+
+function FCKupdate() {
+  if (typeof(doFCKeditorSave)!='undefined') {
+    $('.form-submit').bind('click', function(){ doFCKeditorSave(); });
+  }
+  if(typeof(FCKeditor_OnAfterLinkedFieldUpdate)!='undefined'){
+    $('.form-submit').bind('click', function(){ FCKeditor_OnAfterLinkedFieldUpdate(FCKeditorAPI.GetInstance('edit-comment')); });
+  }
+}

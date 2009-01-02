@@ -164,6 +164,3 @@ function ajax_comments_dispatch($form_id = NULL, $form = NULL) {
   print drupal_to_js($result);
   exit();
 }
-
-
-
